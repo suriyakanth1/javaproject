@@ -1,0 +1,133 @@
+package com.javatechie.crud.example.test;
+
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.doReturn;
+//import static org.mockito.Mockito.when;
+//import static org.mockito.Mockito.when;
+
+import java.math.BigDecimal;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+//import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+//import org.springframework.test.context.junit4.SpringRunner;
+
+import com.javatechie.crud.example.controller.PersonController;
+import com.javatechie.crud.example.entity.Book;
+import com.javatechie.crud.example.entity.Person;
+import com.javatechie.crud.example.enumeration.Available;
+import com.javatechie.crud.example.enumeration.Gender;
+import com.javatechie.crud.example.enumeration.Status;
+
+import com.javatechie.crud.example.model.BookView;
+import com.javatechie.crud.example.service.PersonService;
+
+//import validation.InvalidFirstNameException;
+
+@ExtendWith(MockitoExtension.class)
+ class PersonControllerTest {
+
+	@InjectMocks
+	PersonController personcontroller;
+
+	@Mock
+	PersonService service;
+
+	BookView bookView = new BookView();
+	Person person = new Person();
+	Book book = new Book();
+
+	@BeforeEach
+	public void rest() {
+
+		bookView.setId("1");
+		bookView.setLastname("G");
+		bookView.setName("darker");
+		bookView.setAge("23");
+		bookView.setSalary("10000");
+		bookView.setFirstname("Prakash");
+		bookView.setLocation("namakkal");
+		bookView.setDegree("be");
+		bookView.setNumberofbook("2");
+		bookView.setGender(Gender.MALE.toString());
+		bookView.setStatus(Status.ACTIVE.toString());
+		bookView.setPublishon("2026");
+		bookView.setStock("100");
+		bookView.setAvailable("YES");
+		person.setId(1);
+		person.setLastname("G");
+		person.setAge(23);
+		person.setSalary(BigDecimal.valueOf(10000));
+		person.setFirstname("Prakash");
+		person.setLocation("namakkal");
+		person.setDegree("be");
+		person.setNumberofbook(2);
+		person.setGender(Gender.MALE);
+		person.setStatus(Status.ACTIVE);
+		book.setName("raman");
+		book.setId(1);
+		book.setAvailable(Available.valueOf("YES"));
+		book.setPublishon(2026);
+		book.setStock(4);
+	}
+
+//	@Test
+//	 void addPersonTest() throws InvalidFirstNameException {
+//		
+//		//when( service.savePersonView(bookView)).thenReturn(person);
+//		doReturn(person).when( service).savePersonView(bookView);
+//		assertEquals(person.getDegree(), personcontroller.addPerson(bookView).getDegree());
+//		
+//	}
+//	@Test
+//	 void saveBookViewTest()  {
+//		
+//		//when( service.saveBookView(bookView)).thenReturn(book);
+//		doReturn(book).when( service).saveBookView(bookView);
+//
+//		assertEquals(book.getAvailable(), personcontroller.addBook(bookView).getAvailable());
+//		
+//	}
+//	@Test
+//	 void addDataTest() {
+//		
+//		//when( service.updatePerson(bookView)).thenReturn(person);
+//		doReturn(person).when( service).updatePerson(bookView);
+//
+//		assertEquals(person.getFirstname(), personcontroller.personData(bookView).getFirstname());
+//		
+//	}
+	@Test
+ void updateBookTest() {
+		
+		//when( service.updateBookView(bookView)).thenReturn(book);
+		doReturn(book).when( service).updateBookView(bookView);
+
+		assertEquals(book.getName(), personcontroller.bookData(bookView).getName());
+		
+	}
+	
+//	@Test
+//	 void findPersonByIdTest() {
+//		
+//		//when( service.getPersonByid(Integer.valueOf(bookView.getId()))).thenReturn(person);
+//	    doReturn(person).when( service).getPersonByid(Integer.valueOf(bookView.getId()));
+//
+//		assertEquals(person.getId(), personcontroller.findPersonById(1).getId());
+//		
+//	}
+	@Test
+	 void findBookIdTest() {
+		
+		//when( service.getBookByid(Integer.valueOf(bookView.getId()))).thenReturn(book);
+	
+		doReturn(book).when( service).getBookByid(Integer.valueOf(bookView.getId()));
+
+		assertEquals(book.getId(), personcontroller.findBookId(1).getId());
+		
+	}
+}
