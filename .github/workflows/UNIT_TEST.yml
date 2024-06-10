@@ -31,7 +31,7 @@ jobs:
       - name: Execute Gradle Test
         run: ./gradlew test
       - name: Report
-        uses: dorny/test-reporter@v3
+        uses: dorny/test-reporter@v1
         if: always()
         with:
           name: Gradle Tests
