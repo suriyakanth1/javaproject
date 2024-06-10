@@ -41,6 +41,6 @@ jobs:
         if: always()
         with:
           name: Gradle Tests
-          path: '**/Spring-Boot-main/build/test-results/test/TEST*.xml'
+          path: '**/Spring-Boot-main/test*.xml'
           reporter: java-junit
           fail-on-error: true
