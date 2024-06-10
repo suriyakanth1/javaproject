@@ -30,6 +30,9 @@ jobs:
         run: sudo apt-get install -y maven
       - name: Change directory to project
         run: cd Spring-Boot-main
+      - name: Build with Maven
+        run: mvn -B clean package
+        working-directory: Spring-Boot-main/pom.xml
       - name: Run JUnit Tests
         run: mvn test
       - name: Generate JUnit Report
