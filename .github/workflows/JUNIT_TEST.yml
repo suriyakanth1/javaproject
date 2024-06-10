@@ -1,27 +1,40 @@
-        name: JUNIT_TEST
+name: JUNIT_TEST
 
-        on:
-          workflow_dispatch:
+on:
+  workflow_dispatch:
 
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v3
 
-        jobs:
-          build:
-           name: GITHUB
-           runs-on: ubuntu-latest
-           steps:
-                - name: Check out the repo
-                  uses: actions/checkout@v3  
-            
-
-    #---------------- BUILD_SCRIPT
-          BUILD_SCRIPT:
-            needs: [build]
-            runs-on: ubuntu-latest
-            steps:
-               - name: Run script on the VM
-                 run: |
-                   sshpass -p "ClearC0de20S4" ssh -o StrictHostKeyChecking=no root@158.220.107.63 <<EOF
-                              cd ~/projects/script_test/javaproject/Spring-Boot-main
-                              mvn clean
-                              mvn install 
-                   EOF
+  run-tests:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    needs: build
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Set up JDK 17
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'corretto'
+          java-version: '17'
+      - name: Validate Gradle Wrapper
+        run: ./gradlew wrapper
+      - name: Execute Gradle Test
+        run: ./gradlew test
+      - name: Report
+        uses: dorny/test-reporter@v1
+        if: always()
+        with:
+          name: Gradle Tests
+          path: '**/build/test-results/test/TEST*.xml'
+          reporter: java-junit
+          fail-on-error: true
