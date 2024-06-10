@@ -9,6 +9,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3  # Checkout the repository code
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'corretto'  # Use the Corretto JDK distribution
+          java-version: '17'       # Set JDK version to 17
+      - name: Install Maven
+        run: sudo apt-get update && sudo apt-get install -y maven
 
   run-tests:
     name: Run Tests
@@ -25,14 +32,15 @@ jobs:
           distribution: 'corretto'  # Use the Corretto JDK distribution
           java-version: '17'       # Set JDK version to 17
       - name: Install Maven
-        run: sudo apt-get update && sudo apt-get install -y maven  # Update package list and install Maven
-
+        run: sudo apt-get update && sudo apt-get install -y maven
       - name: Run JUnit Tests
-        working-directory: Spring-Boot-main  # Change to the directory containing the pom.xml
-        run: mvn test  # Execute Maven test using the correct directory
-
-      - name: Generate JUnit Report (optional)
-        uses: actions/upload-artifact@v3
+        working-directory: Spring-Boot-main  
+        run: mvn test 
+      - name: Generate and Upload JUnit Report
+        uses: dorny/test-reporter@v1
+        if: always()
         with:
-          name: junit-report
-          path: 'Spring-Boot-main/target/surefire-reports/*.xml' # Specify the path to report files (adjust if needed)
+          name: Gradle Tests
+          path: '**/Spring-Boot-main/build/test-results/test/TEST*.xml'
+          reporter: java-junit
+          fail-on-error: true
