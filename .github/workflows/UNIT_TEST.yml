@@ -24,7 +24,7 @@ jobs:
         working-directory: Spring-Boot-main 
         run: mvn test  
       - name: Generate JUnit Report (optional)
-        uses: dorny/test-reporter-action@v2
+        uses: dorny/test-reporter-action@v1
         with:
           name: junit-report
           path: 'Spring-Boot-main/target/surefire-reports/*.xml' 
