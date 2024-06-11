@@ -28,4 +28,5 @@ jobs:
           mkdir -p junit-reports
           find . -type f -path './Spring-Boot-main/target/surefire-reports/*.xml' -exec cp {} junit-reports \;
       - name: List JUnit Report Files
-        run: ls junit-reports
+        run: ls junit-reports 
+             cat junit-reports/TEST-com.javatechie.crud.example.test.BookMapperTest.xml
