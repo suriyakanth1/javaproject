@@ -17,14 +17,13 @@ jobs:
         uses: actions/setup-java@v3
         with:
           distribution: 'corretto'
-          java-version: '17'       
+          java-version: '17'
       - name: Install Maven
         run: sudo apt-get update && sudo apt-get install -y maven
       - name: Run JUnit Tests
         working-directory: Spring-Boot-main 
         run: mvn test
       - name: Generate JUnit Report
-        uses: dorny/test-reporter-action@v1
-        with:
-          name: junit-report
-          path: 'Spring-Boot-main/target/surefire-reports/*.xml'
+        run: |
+          mkdir -p junit-reports
+          find . -type f -path './Spring-Boot-main/target/surefire-reports/*.xml' -exec cp {} junit-reports \;
