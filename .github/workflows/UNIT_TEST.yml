@@ -29,4 +29,9 @@ jobs:
           find . -type f -path './Spring-Boot-main/target/surefire-reports/*.xml' -exec cp {} junit-reports \;
       - name: List JUnit Report Files
         run: ls junit-reports 
-             cat junit-reports/TEST-com.javatechie.crud.example.test.BookMapperTest.xml
+      - name: Parse JUnit Reports
+        uses: jake-wins/action-junit-report@v3
+        with:
+          check_name: Gradle Tests  # Optional custom test check name
+          path: '**/Spring-Boot-main/target/surefire-reports/*.xml'
+          reports: junit 
