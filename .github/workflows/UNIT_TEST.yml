@@ -29,9 +29,17 @@ jobs:
           find . -type f -path './Spring-Boot-main/target/surefire-reports/*.xml' -exec cp {} junit-reports \;
       - name: List JUnit Report Files
         run: ls junit-reports 
-      - name: Parse JUnit Reports
-        uses: jake-wins/action-junit-report@v3
-        with:
-          check_name: Gradle Tests  # Optional custom test check name
-          path: '**/Spring-Boot-main/target/surefire-reports/*.xml'
-          reports: junit 
+      - name: Parse JUnit Report
+        id: parse-junit-report
+        run: |
+          junit_xml_files=$(find junit-reports -name "*.xml")
+          total_tests=0
+          failed_tests=0
+          for file in $junit_xml_files; do
+            tests=$(xmllint --xpath "count(//testcase)" $file)
+            failures=$(xmllint --xpath "count(//testcase/failure)" $file)
+            total_tests=$((total_tests + tests))
+            failed_tests=$((failed_tests + failures))
+          done
+          echo "::set-output name=total_tests::$total_tests"
+          echo "::set-output name=failed_tests::$failed_tests"
