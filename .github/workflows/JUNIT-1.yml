@@ -24,3 +24,7 @@ jobs:
         with:
           name: junit-report
           path: 'Spring-Boot-main/target/surefire-reports' # Adjusted path to include the directory
+      - name: Display Test Results Summary
+        run: |
+          echo "Test Results Summary:"
+          cat Spring-Boot-main/target/surefire-reports/*.txt  # Assuming test summary is stored in a text file
