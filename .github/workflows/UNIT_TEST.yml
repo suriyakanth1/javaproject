@@ -4,7 +4,6 @@ on:
   workflow_dispatch:  
 
 jobs:
-
   run-tests:
     name: Run Tests
     runs-on: ubuntu-latest
@@ -25,13 +24,3 @@ jobs:
         with:
           name: junit-report
           path: 'Spring-Boot-main/target/surefire-reports' # Adjusted path to include the directory
-      - name: Download Artifact
-        uses: actions/download-artifact@v2
-        with:
-          name: junit-report
-          path: junit-reports  
-      - name: List Artifact Contents
-        run: ls -R junit-reports
-
-
-      
