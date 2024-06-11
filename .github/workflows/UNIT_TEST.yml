@@ -1,20 +1,13 @@
 name: UNIT_TEST
 
 on:
-  workflow_dispatch:  # Triggered manually (adjust if needed)
+  workflow_dispatch:  
 
 jobs:
-
-  build:
-    name: Build
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3  # Checkout the repository code
 
   run-tests:
     name: Run Tests
     runs-on: ubuntu-latest
-    needs: build  # This job depends on the build job completing first
     permissions:
       contents: read  # Read access to code repository
       packages: write  # Write access for building artifacts
@@ -35,16 +28,13 @@ jobs:
         with:
           name: junit-report
           path: 'Spring-Boot-main/target/surefire-reports' # Adjusted path to include the directory
-
-  list-artifacts:
-    name: List Artifacts
-    runs-on: ubuntu-latest
-    needs: run-tests
-    steps:
       - name: Download Artifact
         uses: actions/download-artifact@v2
         with:
           name: junit-report
-          path: junit-reports  # Destination directory to download the artifact
+          path: junit-reports  
       - name: List Artifact Contents
         run: ls -R junit-reports
+
+
+      
