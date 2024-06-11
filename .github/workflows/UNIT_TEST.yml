@@ -10,6 +10,9 @@ jobs:
     permissions:
       contents: read  # Read access to code repository
       packages: write  # Write access for building artifacts
+    outputs:
+      total_tests: ${{ steps.parse-junit-report.outputs.total_tests }}
+      failed_tests: ${{ steps.parse-junit-report.outputs.failed_tests }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3  # Checkout the repository code (again, for this job)
@@ -27,8 +30,6 @@ jobs:
         run: |
           mkdir -p junit-reports
           find . -type f -path './Spring-Boot-main/target/surefire-reports/*.xml' -exec cp {} junit-reports \;
-      - name: List JUnit Report Files
-        run: ls junit-reports 
       - name: Parse JUnit Report
         id: parse-junit-report
         run: |
@@ -43,3 +44,12 @@ jobs:
           done
           echo "::set-output name=total_tests::$total_tests"
           echo "::set-output name=failed_tests::$failed_tests"
+
+  view-results:
+    needs: run-tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Display Test Results
+        run: |
+          echo "Total Tests: ${{ needs.run-tests.outputs.total_tests }}"
+          echo "Failed Tests: ${{ needs.run-tests.outputs.failed_tests }}"
